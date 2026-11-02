@@ -1,0 +1,110 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/bricolage-grotesque/wdth.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Official brand colours (space-separated RGB channels for Tailwind alpha support) */
+    --c-white: 255 255 255;
+    --c-offwhite: 245 245 244;      /* #F5F5F4 */
+    --c-charcoal: 37 37 37;         /* #252525 */
+    --c-charcoal-soft: 85 85 85;    /* secondary text, 6.8:1 on off-white */
+    --c-line: 226 224 221;
+    /* Primary red #83040A and its tints/shades */
+    --c-brand-50: 251 242 241;
+    --c-brand-100: 244 221 219;
+    --c-brand-200: 227 179 176;
+    --c-brand-500: 179 38 45;
+    --c-brand-600: 155 15 23;
+    --c-brand-700: 131 4 10;        /* #83040A */
+    --c-brand-800: 107 3 8;
+    --c-brand-900: 86 2 7;
+    --c-brand-950: 58 1 5;
+    /* Accent yellow #E9BF15 */
+    --c-accent-50: 253 247 220;
+    --c-accent-400: 239 203 67;
+    --c-accent-500: 233 191 21;     /* #E9BF15 */
+    --c-accent-600: 201 161 14;
+    --c-accent-700: 165 132 9;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-paper font-sans text-base leading-relaxed text-ink antialiased;
+    overflow-x: clip;
+  }
+  h1, h2, h3, h4 {
+    @apply font-heading font-bold text-ink;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  :focus-visible {
+    /* yellow ring + charcoal edge: visible on white, red and charcoal backgrounds */
+    outline: 3px solid rgb(var(--c-accent-500));
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px rgb(var(--c-charcoal));
+  }
+  ::selection { background: rgb(var(--c-accent-500)); color: rgb(var(--c-charcoal)); }
+}
+
+@layer components {
+  .container-x { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
+  /* One vertical rhythm for every band: ~56px phones, ~70px tablet, ~96px desktop (fluid, no jumps). */
+  .section, .pad-y { padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem); }
+  .eyebrow { @apply mb-4 inline-flex items-center gap-2.5 text-[0.8125rem] font-bold text-brand-700 sm:text-sm; }
+  .eyebrow::before { content: ''; @apply h-1 w-7 bg-accent-500; }
+  .display { font-family: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif; font-stretch: 78%; font-weight: 800; line-height: .95; letter-spacing: -0.012em; text-wrap: balance; }
+  /* Type scale: h1 48-88px, h2 36-64px, h3 28-48px, h4 20-24px (row and card titles). */
+  .h1 { @apply display text-[clamp(3rem,10.5vw,5.5rem)]; }
+  .h2 { @apply display text-[clamp(2.25rem,6vw,4rem)]; }
+  .h3 { @apply display text-[clamp(1.75rem,1.2rem+2.2vw,3rem)]; }
+  .h3-compact { @apply display text-[clamp(1.75rem,1.3rem+1.4vw,2.5rem)]; }
+  .h4 { @apply font-heading text-xl font-bold leading-tight sm:text-2xl; }
+  .lead { @apply max-w-[38rem] text-[1.0625rem] text-ink-soft sm:text-lg; }
+  .blueprint {
+    background-image:
+      linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+  .card {
+    @apply rounded-card border border-line bg-white shadow-card;
+  }
+  .card-hover {
+    @apply transition duration-200 ease-out hover:-translate-y-1 hover:shadow-lift hover:border-brand-200;
+  }
+}
+
+/* Section reveal: only hidden when JS has flagged the document, so content never disappears without JS. */
+.js .reveal:not(.is-visible) { opacity: 0; transform: translateY(18px); }
+.reveal { transition: opacity .6s cubic-bezier(.22,.61,.36,1), transform .6s cubic-bezier(.22,.61,.36,1); }
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .js .reveal:not(.is-visible) { opacity: 1; transform: none; }
+}
+
+/* Align full-bleed bands with the 80rem container */
+.edge-l { padding-left: max(1rem, calc((100vw - 80rem) / 2 + 2rem)); }
+.edge-r { padding-right: max(1rem, calc((100vw - 80rem) / 2 + 2rem)); }
+@media (max-width: 639px) { .edge-l { padding-left: 1rem; } .edge-r { padding-right: 1rem; } }
+
+/* One orchestrated moment: hero entrance */
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.rise { animation: rise .55s cubic-bezier(.22,.61,.36,1) both; }
